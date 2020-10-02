@@ -357,11 +357,32 @@ size_t Test_Runner::run_tests(const std::vector<std::string>& tests_to_run,
             }
          }
 
-      for(size_t i = 0; i != m_fut_results.size(); ++i)
+      const auto wait_time = std::chrono::seconds(4);
+
+      for(;;)
          {
-         output() << tests_to_run[i] << ':' << std::endl;
-         const std::vector<Test::Result> results = m_fut_results[i].get();
-         output() << report_out(results, tests_failed, tests_ran) << std::flush;
+         bool more_results = false;
+         for(size_t i = 0; i != m_fut_results.size(); ++i)
+            {
+            if(m_fut_results[i].valid())
+               {
+               auto status = m_fut_results[i].wait_for(wait_time);
+               if(status == std::future_status::ready)
+                  {
+                  output() << tests_to_run[i] << ':' << std::endl;
+                  const auto results = m_fut_results[i].get();
+                  output() << report_out(results, tests_failed, tests_ran) << std::flush;
+                  }
+               else
+                  {
+                  output() << "Still waiting on " << tests_to_run[i] << "..." << std::endl << std::flush;
+                  more_results = true;
+                  }
+               }
+            }
+
+         if(!more_results)
+            break;
          }
 
       pool.shutdown();
