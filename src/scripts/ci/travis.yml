@@ -13,6 +13,7 @@ jobs:
       compiler: gcc
       env:
        - TARGET="coverage"
+       - CXX="/usr/bin/g++-8"
 
 install:
   - ./src/scripts/ci/setup_travis.sh
