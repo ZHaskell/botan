@@ -119,7 +119,7 @@ def determine_flags(target, target_os, target_cpu, target_cc, cc_bin,
         test_cmd += ['--skip-tests=certstor_system']
 
     if target == 'coverage':
-        flags += ['--with-coverage-info', '--with-debug-info', '--test-mode', '--optimize-for-size']
+        flags += ['--with-coverage-info', '--with-debug-info', '--test-mode']
         test_cmd += ['--skip-tests=tls_stream_integration']
 
     if target == 'valgrind':
