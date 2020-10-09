@@ -70,7 +70,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 
     elif [ "$TARGET" = "coverage" ]; then
         sudo apt-get -qq update
-        sudo apt-get install softhsm2 libtspi-dev lcov python-coverage libboost-all-dev gdb
+        sudo apt-get install g++-8 softhsm2 libtspi-dev lcov python-coverage libboost-all-dev gdb
         pip install --user codecov
         git clone --depth 1 --branch runner-changes-golang1.10 https://github.com/randombit/boringssl.git
 
